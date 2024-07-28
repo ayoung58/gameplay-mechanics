@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -25,13 +26,15 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        enemyCount = GameObject.FindObjectsOfType<Enemy>().Length;
-        if (enemyCount == 0) {
-            if (GameObject.Find("PowerIcon(Clone)") == null) {
-                Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation); 
+        if (!PlayerController.dead) {
+            enemyCount = GameObject.FindObjectsOfType<Enemy>().Length;
+            if (enemyCount == 0) {
+                if (GameObject.Find("PowerIcon(Clone)") == null) {
+                    Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation); 
+                }
+                waveNumber++;
+                SpawnEnemyWave(waveNumber);
             }
-            waveNumber++;
-            SpawnEnemyWave(waveNumber);
         }
     }
 

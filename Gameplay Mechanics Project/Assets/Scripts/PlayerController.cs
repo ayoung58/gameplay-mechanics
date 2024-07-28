@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private float powerupStrength = 15.0f;
     public float powerupTime = 7;
     public GameObject powerupIndicator;
+    public static bool dead = false;
     public Vector3 offsetIndicator = new Vector3(0, -0.5f, 0);
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,10 @@ public class PlayerController : MonoBehaviour
         float forwardInput = Input.GetAxis("Vertical");
         rb.AddForce(focalPoint.transform.forward * speed * forwardInput);
         powerupIndicator.transform.position = transform.position + offsetIndicator;
+
+        if (transform.position.y < -10) {
+            dead = true;
+        }
     }
 
     IEnumerator PowerupCountdownRoutine() {
