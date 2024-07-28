@@ -29,7 +29,14 @@ public class PlayerController : MonoBehaviour
 
         if (transform.position.y < -10) {
             dead = true;
+            transform.position = new Vector3(0, 0, 0);
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero; 
         }
+    }
+
+    public void setDeath(bool isDead) {
+        dead = isDead;
     }
 
     IEnumerator PowerupCountdownRoutine() {

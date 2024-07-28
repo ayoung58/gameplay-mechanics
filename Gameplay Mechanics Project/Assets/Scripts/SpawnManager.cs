@@ -7,6 +7,7 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject powerupPrefab;
+    public PlayerController playerScript;
     public int waveNumber = 1;
     public float spawnRange = 9;
     private int enemyCount;
@@ -15,6 +16,7 @@ public class SpawnManager : MonoBehaviour
     {
         SpawnEnemyWave(waveNumber);
         Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation); 
+        playerScript = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     void SpawnEnemyWave(int numEnemies) {
@@ -26,15 +28,18 @@ public class SpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PlayerController.dead) {
-            enemyCount = GameObject.FindObjectsOfType<Enemy>().Length;
-            if (enemyCount == 0) {
-                if (GameObject.Find("PowerIcon(Clone)") == null) {
-                    Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation); 
-                }
-                waveNumber++;
-                SpawnEnemyWave(waveNumber);
+        if (PlayerController.dead) {
+            waveNumber = 1;
+            SpawnEnemyWave(waveNumber);
+            playerScript.setDeath(false);
+        }
+        enemyCount = GameObject.FindObjectsOfType<Enemy>().Length;
+        if (enemyCount == 0) {
+            if (GameObject.Find("PowerIcon(Clone)") == null) {
+                Instantiate(powerupPrefab, GenerateSpawnPosition(), powerupPrefab.transform.rotation); 
             }
+            waveNumber++;
+            SpawnEnemyWave(waveNumber);
         }
     }
 
